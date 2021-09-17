@@ -5,6 +5,7 @@ import re
 from find_ex import find_extension
 import urllib.request
 from string import punctuation
+from rand_str import rand_str
 
 print("Welcome HTML Image Parser")
 
@@ -16,6 +17,8 @@ url = input("Enter URL: ")
 # Add https:// before the input url
 if not url.startswith("http://") and not url.startswith("https://"):
   url = "https://" + url
+
+print(url)
 
 # Using urllib3 library instead of urllib
 http = urllib3.PoolManager()
@@ -45,14 +48,13 @@ img_dict = {}
 image_count = 1
 
 for tag in img_tags:
-  # Get attr
+  # Get src and title attr
   img_link = tag.get("src").strip()
   img_title = tag.get("alt")
 
   # If blank or no alt attr, then give arbitrary filename
   if img_title is None or img_title == "":
-    img_title = "img-" + str(image_count)
-    image_count += 1
+    img_title = rand_str()
   else:
     img_title = img_title.strip()
     img_title = img_title.translate(img_title.maketrans("", "", punctuation))
@@ -67,7 +69,7 @@ for tag in img_tags:
   else:
     img_dict[img_title] = img_link
 
-print(url)
+# Print the img_dict, { img_title = img_link, ... }
 print(img_dict)
 
 download_complete = 0
