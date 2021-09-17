@@ -34,3 +34,5 @@ Enter URL: q
 
 ## Note
 All the images in a website will be saved in the "imgs" directory.
+
+Copyright &copy; 2021 | [Vikram Negi](https://twitter.com/lostvikx)
