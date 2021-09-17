@@ -3,7 +3,7 @@ import urllib3
 import os
 import re
 from find_ex import find_extension
-import urllib.request
+import urllib.request, urllib.error
 from string import punctuation
 from rand_str import rand_str
 
@@ -45,7 +45,6 @@ soup = BeautifulSoup(html, "html.parser")
 img_tags = soup.find_all("img")
 
 img_dict = {}
-image_count = 1
 
 for tag in img_tags:
   # Get src and title attr
@@ -72,25 +71,40 @@ for tag in img_tags:
 # Print the img_dict, { img_title = img_link, ... }
 print(img_dict)
 
+# n of files downloaded
 download_complete = 0
 
 for (title, link) in list(img_dict.items()):
+  # Find the extension of the img file ["jpg", "png"]
   file_ext = find_extension(link).strip()
 
-  res_img = urllib.request.urlopen(link)
+  # GET req for the img file, can get a 403 error (Forbidden client)
+  try:
+    res_img = urllib.request.urlopen(link)
+  except urllib.error:
+    print("Couldn't fetch img link.")
+    print(urllib.error)
+    # Continue to the next iteration
+    continue
 
+  # This is only for testing purpose.
+  # If a file with a similar name exists, remove it.
   try:
     os.remove(f"{path}/imgs/{title}.{file_ext}")
   except:
+    # Good stuff
     pass
 
+  # Open file handle to write in bytes
   try:
     file_handle = open(f"./imgs/{title}.{file_ext}", "wb")
   except:
-    print("img not saved")
+    print("Couldn't open file handle for writing.")
     file_handle.close()
+    # Sometimes 
     continue
 
+  # Img size
   i_size = 0
 
   while True:
