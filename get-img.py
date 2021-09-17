@@ -17,14 +17,17 @@ url = input("Enter URL: ")
 if not url.startswith("http://") and not url.startswith("https://"):
   url = "https://" + url
 
+# Using urllib3 library instead of urllib
 http = urllib3.PoolManager()
 
+# GET request for the entire HTML page
 res = http.request(
   "GET",
   url,
   preload_content=False
 )
 
+# Storing the page as bytes
 html = b""
 
 for chunk in res.stream(1024):
@@ -32,13 +35,13 @@ for chunk in res.stream(1024):
 
 res.release_conn()
 
+# Using BS4 to parse the HTML
 soup = BeautifulSoup(html, "html.parser")
 
 # List of img tags
 img_tags = soup.find_all("img")
 
 img_dict = {}
-
 image_count = 1
 
 for tag in img_tags:
@@ -46,7 +49,7 @@ for tag in img_tags:
   img_link = tag.get("src").strip()
   img_title = tag.get("alt")
 
-  # If no or blank alt attr then give arbitrary filename
+  # If blank or no alt attr, then give arbitrary filename
   if img_title is None or img_title == "":
     img_title = "img-" + str(image_count)
     image_count += 1
