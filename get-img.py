@@ -18,7 +18,7 @@ url = input("Enter URL: ")
 if not url.startswith("http://") and not url.startswith("https://"):
   url = "https://" + url
 
-print(url)
+print(f"Retrieving: '{url}'")
 
 # Using urllib3 library instead of urllib
 http = urllib3.PoolManager()
@@ -59,7 +59,7 @@ for tag in img_tags:
     img_title = img_title.translate(img_title.maketrans("", "", punctuation))
     img_title = re.sub(r"\s", "_", img_title)
 
-  # Pretty good stuff
+  # Pretty good logic
   if not re.search(r"^http[s]?://", img_link):
     if re.search(r"^/", img_link):
       img_dict[img_title] = url + img_link
