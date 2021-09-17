@@ -101,7 +101,6 @@ for (title, link) in list(img_dict.items()):
   except:
     print("Couldn't open file handle for writing.")
     file_handle.close()
-    # Sometimes 
     continue
 
   # Img size
@@ -112,14 +111,16 @@ for (title, link) in list(img_dict.items()):
     i_size += len(info)
     if len(info) < 1: break
 
+    # Check if the file handle is writable
     if file_handle.writable(): file_handle.write(info)
     else: 
       print("file not writable")
       file_handle.close()
+      break
 
-  print(f"download file complete size: {i_size}")
+  print(f"Download Complete: {i_size}bytes")
   download_complete += 1
   file_handle.close()
 
 print("Execution Complete")
-print(f"{download_complete} files were downloaded")
+print(f"{download_complete} files were downloaded!")
