@@ -7,7 +7,8 @@ import urllib.request, urllib.error
 from string import punctuation
 from rand_str import rand_str
 
-print("Welcome HTML Image Parser")
+print("Welcome to acquire-imgs")
+print("Enter 'q' to quit")
 
 # Current working dir (no "/" at the end)
 path = os.getcwd()
